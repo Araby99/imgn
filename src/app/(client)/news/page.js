@@ -7,7 +7,7 @@ import Card from '../../components/Card';
 export default () => {
     const [news, setNews] = useState();
     const getData = link => {
-        axios.get(link).then(result => {
+        axios.post(link, {}).then(result => {
             setNews(result.data)
         })
     }
