@@ -1,27 +1,107 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.main-imgn {
+  background-color: #161616;
+  background-image: url(/images/Background.png);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  overflow-x: hidden;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.skew-20 {
+  transform: skewX(20deg);
 }
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.skew--20 {
+  transform: skewX(-20deg);
+}
+.nav-container {
+  border-bottom: solid 3px #fff;
+}
+.swiper-pagination {
+  position: relative;
+  bottom: 0;
+  transform: translateY(100%);
+  z-index: 1000000;
+  background: #fff;
+}
+.carousel-image {
+  height: 100%;
+}
+.carousel-image .overlay {
+  filter: blur(2rem);
+  z-index: -1;
+}
+.carousel-image img {
+  height: 100%;
+}
+.nav-search {
+  background: #4e3261;
+  outline: none;
+}
+.dropdownNavbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100%);
+  width: 100%;
+}
+.dropdown-items {
+  padding: 10px 0;
+  text-align: center;
+  width: 90%;
+  margin: auto;
+  border-bottom: solid 1px #4e3261;
+}
+.dropdownNavbarLink:hover button {
+  color: #4e3261;
+}
+.main-imgn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+.dir-rtl {
+  direction: rtl;
+}
+.nav-item-active {
+  background: #fff;
+  color: #4e3261!important;
+}
+.pagination > * {
+    opacity: .5;
+    cursor: pointer;
+}
+.pagination > *.active {
+    opacity: 1;
+}
+footer {
+  padding: 100px 0 50px!important;
+  background: url(/images/footer.png) no-repeat;
+  background-size: cover;
+}
+.footer-links:hover img {
+  filter: invert(1);
+}
+.login {
+    height: 100vh;
+    width: 100vw;
+    background-image: url(/images/Background.png);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+.login-container::after {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    height: calc(100% + 60px);
+    width: calc(100% + 60px);
+    border: solid 6px #fff;
+    border-radius: 20px;
+    z-index: -1;
 }
