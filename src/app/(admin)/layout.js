@@ -4,7 +4,6 @@ import axios from 'axios'
 import localFont from 'next/font/local'
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER;
-console.log(process.env.NEXT_PUBLIC_SERVER);
 const poppins = localFont({
     src: [
         {
