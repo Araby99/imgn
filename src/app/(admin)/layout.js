@@ -4,6 +4,7 @@ import axios from 'axios'
 import localFont from 'next/font/local'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUrl } from 'nextjs-current-url';
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER;
 const poppins = localFont({
@@ -34,31 +35,33 @@ const poppins = localFont({
 export default ({ children }) => {
     const [admin, setAdmin] = useState();
     const router = useRouter();
-    if (typeof window != undefined) {
-        console.log(window?.location.hostname.split(".")[0]);
-    }
+    const { href: currentUrl } = useUrl() ?? {};
     useEffect(() => {
-        if (window.location.hostname.split(".")[0] == "admin") {
-            setAdmin(true)
-        } else {
-            setAdmin(false)
+        if (currentUrl) {
+            const url = new URL(currentUrl);
+            if (url.hostname.split(".")[0] == "admin") {
+                setAdmin(true)
+            } else {
+                setAdmin(false)
+            }
         }
-    }, [])
-    if (admin && admin !== undefined) {
-        return (
-            <html lang="ar">
-                <head>
-                    <title>IMGN</title>
-                    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
-                </head>
-                <body>
-                    <div className={poppins.className}>
-                        {children}
-                    </div>
-                </body>
-            </html>
-        )
-    } else if (admin == false && admin !== undefined) {
-        router.push("/404")
-    }
+    }, [currentUrl])
+    useEffect(() => {
+        if (admin == false && admin !== undefined) {
+            router.push("/404")
+        }
+    }, [admin])
+    return (
+        <html lang="ar">
+            <head>
+                <title>IMGN</title>
+                <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
+            </head>
+            <body>
+                <div className={poppins.className}>
+                    {children}
+                </div>
+            </body>
+        </html>
+    )
 }

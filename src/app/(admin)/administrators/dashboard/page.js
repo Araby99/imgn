@@ -1,9 +1,16 @@
 "use client"
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 export default () => {
     const router = useRouter();
-    router.push("dashboard/home")
-    return <></>
+    const pathname = usePathname();
+    useEffect(() => {
+        router.push(`dashboard/home`)
+    }, [pathname])
+    useEffect(() => {
+    }, [])
+    return (
+        <></>
+    )
 }

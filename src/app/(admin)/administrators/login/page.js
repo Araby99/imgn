@@ -40,7 +40,6 @@ export default () => {
         const password = e.target.password.value;
         const isStorage = e.target.save.checked;
         axios.post("/admin/login", { username, password }).then(result => {
-            console.log(result);
             if (isStorage) {
                 localStorage.setItem("token", result.data)
             } else {
