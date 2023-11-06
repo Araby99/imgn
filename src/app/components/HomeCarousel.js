@@ -1,22 +1,49 @@
 import React from 'react'
-const OwlCarousel = dynamic(() => import("react-owl-carousel"), {
-    ssr: false,
-});
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
-import dynamic from 'next/dynamic';
-import { NewsCarousel } from './NewsCarousel';
+import Carousel from 'react-multi-carousel';
+import "react-multi-carousel/lib/styles.css";
+import SectionCarousel from './SectionCarousel';
+
 
 export default () => {
+    const responsive = {
+        superLargeDesktop: {
+            // the naming can be any, depends on you.
+            breakpoint: { max: 4000, min: 3000 },
+            items: 1
+        },
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 1
+        },
+        tablet: {
+            breakpoint: { max: 1024, min: 464 },
+            items: 1
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 1
+        }
+    };
     return (
-        <div className="w-[80%] flex-[100%] flex items-center mx-auto h-full">
-            <OwlCarousel loop items={1} dots={false}>
-                <div className='item px-5'>
-                    <div className="skew--20 bg-white h-full w-full">
-                        <NewsCarousel />
+        <div className="w-[80%] m-auto">
+            <Carousel responsive={responsive}
+                infinite={true}
+                autoPlaySpeed={5000}
+                pauseOnHover={true}
+                arrows={false}
+            // autoPlay={true}
+            >
+                <div className="mx-30 py-[80px] h-full select-none">
+                    <div className='skew--20 bg-white h-full w-full'>
+                        <SectionCarousel sectionName="news" />
                     </div>
                 </div>
-            </OwlCarousel>
+                <div className="mx-30 py-[80px] h-full select-none">
+                    <div className='skew--20 bg-white h-full w-full'>
+                        <SectionCarousel sectionName="articles" />
+                    </div>
+                </div>
+            </Carousel>
         </div>
     )
 }

@@ -15,17 +15,15 @@ export default () => {
             setNumbers(numbers)
         })
     }, [])
-    const updateUI = () => {
-        return (
-            <div className="flex flex-col gap-10">
-                {
-                    social?.sort((a, b) => a.index - b.index).map((item, index) => (
-                        <Social changeData={changeData} _id={item._id} changeIndex={changeIndex} numbers={numbers} key={index} index={item.index} name={item.name} link={item.link} icon={item.icon} />
-                    ))
-                }
-            </div>
-        )
-    }
+    const updateUI = () => (
+        <div className="flex flex-col gap-10">
+            {
+                social?.sort((a, b) => a.index - b.index).map((item, index) => (
+                    <Social changeData={changeData} _id={item._id} changeIndex={changeIndex} numbers={numbers} key={index} index={item.index} name={item.name} link={item.link} icon={item.icon} />
+                ))
+            }
+        </div>
+    )
     const changeData = (id, type, data) => {
         let obj = [...social];
         obj.find(o => {
@@ -48,6 +46,7 @@ export default () => {
         setSocial(obj)
     }
     useEffect(() => {
+        console.log(social);
         updateUI();
     }, [social])
     const [file, setFile] = useState();
@@ -91,7 +90,7 @@ export default () => {
     return (
         <>
             {updateUI()}
-            
+
             <ToastContainer
                 position="bottom-left"
                 autoClose={2000}

@@ -45,7 +45,7 @@ export default ({ children }) => {
         <div className='flex flex-col min-h-[100vh]'>
             <nav className='dir-rtl flex items-center bg-[#511752] text-white'>
                 <div className="w-[15%] flex justify-center items-center gap-5 p-5">
-                    <Link href="setting">
+                    <Link href={`${usePathname().split("/dashboard/")[0]}/dashboard/setting`}>
                         <img src="/images/white-setting.png" className='h-8' alt="اعدادات" />
                     </Link>
                     <span className='font-bold text-[1.2rem]'>{user?.username}</span>

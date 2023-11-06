@@ -133,3 +133,6 @@ table td {
 table tr:first-child td {
   @apply font-bold
 }
+/* .carousel-text > * {
+  transform: skew(20deg);
+} */

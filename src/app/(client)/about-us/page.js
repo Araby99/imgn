@@ -1,13 +1,9 @@
 "use client";
-import Head from 'next/head'
 import React from 'react'
 
 export default () => {
     return (
         <>
-            <Head>
-                <title>IMGN | من نحن</title>
-            </Head>
             <main>
                 <div className="container mx-auto">
                     <div

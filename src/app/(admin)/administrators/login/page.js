@@ -76,7 +76,7 @@ export default () => {
                         <label htmlFor="save">حفظ البيانات</label>
                     </div>
                     <div className="flex justify-center">
-                        <button className='rounded-full bg-[#511752] text-white px-10 py-3 cursor-pointer font-bold' type='submit'>
+                        <button className='bg-gradient-to-t from-[#511752] to-[#71c8df] rounded-full text-white px-10 py-3 cursor-pointer font-bold' type='submit'>
                             {!submitLoader ? "تسجيل الدخول" : (
                                 <Puff
                                     height="30"

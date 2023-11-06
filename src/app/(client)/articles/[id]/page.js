@@ -1,6 +1,5 @@
 "use client"
 import axios from 'axios';
-import Head from 'next/head';
 import React, { useEffect, useState } from 'react'
 
 export default ({ params }) => {
@@ -20,9 +19,6 @@ export default ({ params }) => {
     }
     return (
         <>
-            <Head>
-                <title>IMGN | {articles.title}</title>
-            </Head>
             <div className='text-right container mx-auto py-20 text-white'>
                 <p className="font-bold text-3xl">{articles.title}</p>
                 <div className="w-full py-10">

@@ -10,7 +10,6 @@ export default () => {
             setSocial(result.data)
         })
     }, [])
-    console.log(social);
     return (
         <footer className="text-white w-screen flex gap-6 flex-col lg:py-8 text-center">
             <div className="text-center">
@@ -21,7 +20,7 @@ export default () => {
                 {
                     social?.map((item, index) => (
                         <Link
-                            index={index}
+                            key={index}
                             href={item.link}
                             target="_blank"
                             rel="noopener noreferrer">

@@ -1,11 +1,14 @@
-import Head from "next/head"
+"use client"
+import HomeCarousel from "../components/HomeCarousel"
 
 export default () => {
     return (
         <>
-            <Head>
-                <title>IMGN | الصفحة الرئيسة</title>
-            </Head>
+            <div className="flex-1 flex justfy-center items-center">
+                <div className="w-full h-full">
+                    <HomeCarousel />
+                </div>
+            </div>
         </>
     )
 }

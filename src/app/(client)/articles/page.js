@@ -1,22 +1,18 @@
 "use client";
 import Card from '../../components/Card';
 import axios from 'axios';
-import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 
 export default () => {
     const [articles, setArticles] = useState();
     const getData = link => {
-        axios.get(link).then(result => {
+        axios.post(link, {}).then(result => {
             setArticles(result.data)
         })
     }
     useEffect(() => getData("/articles"), [])
     return (
         <>
-            <Head>
-                <title>IMGN | الأخبار</title>
-            </Head>
             <main>
                 <article className="max-w-6xl mx-auto px-3">
                     <section

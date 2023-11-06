@@ -1,8 +1,9 @@
+import Link from 'next/link'
 import React from 'react'
 
 export default (props) => {
     return (
-        <a
+        <Link
             href={`/${props.type}/${props._id}`}
             className="cursor-pointer h-full w-full skew-x-n20 aspect-video transition-all duration-75 ease-in-out block relative top-0 hover:-top-2 shadow-lg hover:shadow-xl bg-white overflow-hidden"
         >
@@ -18,6 +19,6 @@ export default (props) => {
                     {props.title}
                 </p>
             </div>
-        </a>
+        </Link>
     )
 }

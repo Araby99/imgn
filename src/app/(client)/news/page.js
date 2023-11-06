@@ -1,6 +1,5 @@
 "use client";
 import axios from 'axios';
-import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import Card from '../../components/Card';
 
@@ -14,9 +13,6 @@ export default () => {
     useEffect(() => getData("/news"), [])
     return (
         <>
-            <Head>
-                <title>IMGN | الأخبار</title>
-            </Head>
             <main>
                 <article className="max-w-6xl mx-auto px-3">
                     <section
@@ -28,8 +24,6 @@ export default () => {
                                     <Card {...item} type="news" />
                                 </div>
                             ))
-                        }
-                        {
                         }
                     </section>
                     {

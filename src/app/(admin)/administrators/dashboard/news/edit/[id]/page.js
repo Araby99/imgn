@@ -5,8 +5,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Puff } from 'react-loader-spinner';
-import { useParams } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { useParams, useRouter } from 'next/navigation';
 
 export default () => {
     const { id } = useParams();
