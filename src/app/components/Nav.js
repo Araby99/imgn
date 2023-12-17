@@ -1,33 +1,23 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export default () => {
     const [dropdown, setDropdown] = useState(false)
+    const [open, setOpen] = useState(false)
+    const menu = useRef(null)
+    useEffect(() => {
+        if (menu && menu.current) {
+
+        }
+    }, [menu])
     const path = usePathname().split("/")[1];
     return (
-        <nav>
-            <div className="nav-container flex md:flex-row-reverse text-white font-bold max-w-5xl mx-auto px-3 py-3 items-center justify-between h-16">
+        <nav className='relative'>
+            <div className="nav-container flex flex-row-reverse text-white font-bold max-w-5xl mx-auto px-3 py-3 items-center justify-between h-16">
                 <Link href="/" className="h-full">
                     <img className="h-full" src="/images/logo.png" alt="" />
                 </Link>
-                <button
-                    id="mobile-menu-button"
-                    className="block text-white hover:text-gray-400 focus:outline-none focus:text-gray-400 md:hidden"
-                    aria-label="Toggle navigation menu">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
                 <div
                     id="mobile-menu"
                     className="fixed md:static flex flex-col-reverse justify-end md:flex-row-reverse gap-4 py-10 px-5 inset-y-0 right-0 z-20 w-64 md:w-auto bg-white md:bg-transparent translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
@@ -88,10 +78,30 @@ export default () => {
                         ></path></svg>
                     <input type="text" className="skew--20 nav-search p-2" />
                 </form>
+                <button
+                    id="mobile-menu-button"
+                    onClick={() => setOpen(o => !o)}
+                    className="block text-white hover:text-gray-400 focus:outline-none focus:text-gray-400 md:hidden"
+                    aria-label="Toggle navigation menu">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
             </div>
-            <div
-                id="mobile-menu-overlay"
-                className="fixed inset-0 z-10 bg-black opacity-50 hidden" >
+            <div ref={menu} className={`${!open && "scale-y-0"} shadow-2xl absolute top-100 z-50 w-full origin-top duration-500 p-5 overflow-hidden flex flex-col gap-5 bg-white text-right text-bold text-imgn-purple font-bold`}>
+                <Link href="/news">اخبار</Link>
+                <Link href="/articles">المقالات</Link>
+                <Link href="/media">وسائط</Link>
+                <Link href="/about-us">من نحن</Link>
             </div>
         </nav>
     )

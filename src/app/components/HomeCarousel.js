@@ -25,7 +25,7 @@ export default () => {
         }
     };
     return (
-        <div className="w-[80%] m-auto">
+        <div className="w-[95%] my-20 md:my-auto md:w-[80%] mx-auto">
             <Carousel responsive={responsive}
                 infinite={true}
                 autoPlaySpeed={5000}
@@ -33,8 +33,8 @@ export default () => {
                 arrows={false}
             // autoPlay={true}
             >
-                <div className="mx-30 py-[80px] h-full select-none">
-                    <div className='skew--20 bg-white h-full w-full'>
+                <div className="md:mx-30 md:py-[80px] h-full select-none">
+                    <div className='md:skew-x-[-20deg] bg-white h-full w-full'>
                         <SectionCarousel sectionName="news" />
                     </div>
                 </div>

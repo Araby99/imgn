@@ -19,13 +19,14 @@ export default ({ params }) => {
     }
     return (
         <>
-            <div className='text-right container mx-auto py-20 text-white w-[70%]'>
+            <div className='text-right container mx-auto py-20 text-white w-[90%] md:w-[70%]'>
                 <p className="font-bold text-3xl pb-3">{news.title}</p>
                 <p className="text-2xl">{news.subTitle}</p>
-                <div className="w-[50%] m-auto py-10">
+                <div className="w-[95%] md:w-[50%] m-auto py-10">
                     <img src={news.hero} alt={news.title} className='w-full h-1/2 object-contain' />
                 </div>
-                <div dangerouslySetInnerHTML={{ __html: news.description }} />
+                <div className='leading-9 text-xl' dangerouslySetInnerHTML={{ __html: news.description }} />
+                <hr className='mt-10' />
             </div>
         </>
     )

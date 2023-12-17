@@ -2,16 +2,9 @@
 import axios from 'axios'
 import React, { useRef, useState } from 'react'
 
-export default ({ changeData, _id, changeIndex, numbers, index, name, link, icon }) => {
-    const select = useRef(null)
+export default ({ changeData, _id, name, link, icon }) => {
     const [socialName, setSocialName] = useState(name)
     const [editName, setEditName] = useState(false)
-    const handleChange = e => {
-        changeIndex(_id, parseInt(e.target.value - 1))
-    }
-    if (select.current) {
-        select.current.value = index + 1;
-    }
     const saveName = e => {
         if (e.keyCode == 13) {
             setSocialName(e.target.value)
@@ -39,11 +32,6 @@ export default ({ changeData, _id, changeIndex, numbers, index, name, link, icon
     }
     return (
         <div className="flex items-center gap-10">
-            <select ref={select} className='border p-2' defaultValue={index + 1} onChange={e => handleChange(e)}>
-                {numbers.map((num, index) => (
-                    <option key={index} value={num}>{num}</option>
-                ))}
-            </select>
             <div>
                 <div>
                     {editName ? (

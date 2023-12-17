@@ -1,29 +1,26 @@
 "use client"
-import Social from '@/app/components/Social';
+import Drag from '@/app/components/Drag';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 
 export default () => {
     const [social, setSocial] = useState();
-    const [numbers, setNumbers] = useState()
     useEffect(() => {
         axios.get("/social").then(result => {
             setSocial(result.data)
-            let numbers = [];
-            for (let i = 0; i < result.data.length; i++) numbers.push(i + 1);
-            setNumbers(numbers)
         })
     }, [])
-    const updateUI = () => (
-        <div className="flex flex-col gap-10">
-            {
-                social?.sort((a, b) => a.index - b.index).map((item, index) => (
-                    <Social changeData={changeData} _id={item._id} changeIndex={changeIndex} numbers={numbers} key={index} index={item.index} name={item.name} link={item.link} icon={item.icon} />
-                ))
-            }
-        </div>
-    )
+    const add = () => {
+        let clone = social;
+        clone.push({
+            name: "منصة جديدة",
+            link: "https://",
+            icon: ""
+        })
+        setSocial(clone)
+    }
+    console.log(social);
     const changeData = (id, type, data) => {
         let obj = [...social];
         obj.find(o => {
@@ -33,22 +30,6 @@ export default () => {
         })
         setSocial(obj)
     }
-    const changeIndex = (id, nextIndex) => {
-        let obj = [...social];
-        const prev = obj.find(o => o._id == id);
-        obj.find((o, i) => {
-            if (o.index == nextIndex) {
-                obj[i].index = prev.index
-                prev.index = nextIndex;
-                return true;
-            }
-        })
-        setSocial(obj)
-    }
-    useEffect(() => {
-        console.log(social);
-        updateUI();
-    }, [social])
     const [file, setFile] = useState();
     const avatar = useRef();
     const changeAvatar = e => {
@@ -89,8 +70,8 @@ export default () => {
     }
     return (
         <>
-            {updateUI()}
-
+            {social && <Drag changeData={changeData} social={social} setSocial={setSocial} />}
+            <button onClick={add} className="mt-10 flex justify-center py-2 text-[#511752] font-bold rounded-full w-[300px] bg-[#E8E6FF]">أضف منصة</button>
             <ToastContainer
                 position="bottom-left"
                 autoClose={2000}
