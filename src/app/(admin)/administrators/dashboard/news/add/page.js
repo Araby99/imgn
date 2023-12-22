@@ -93,6 +93,7 @@ export default () => {
                 imgs.forEach((img, index) => {
                     const formData = new FormData();
                     formData.append("file", img.src);
+                    console.log(process.env.NEXT_PUBLIC_UPLOAD_NEWS, process.env.NEXT_PUBLIC_CLOUD_NAME, process.env.NEXT_PUBLIC_CLOUD);
                     formData.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_NEWS);
                     formData.append("cloud_name", process.env.NEXT_PUBLIC_CLOUD_NAME);
                     axios.post(process.env.NEXT_PUBLIC_CLOUD, formData).then(image => {
