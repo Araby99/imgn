@@ -8,7 +8,6 @@ import { Puff } from 'react-loader-spinner';
 import Creatable from 'react-select/creatable';
 
 export default () => {
-    console.log(process.env.NEXT_PUBLIC_UPLOAD_NEWS, process.env.NEXT_PUBLIC_CLOUD_NAME, process.env.NEXT_PUBLIC_CLOUD);
     const editorRef = useRef(null);
     const input = useRef(null);
     const avatar = useRef(null);
