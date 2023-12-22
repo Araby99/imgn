@@ -136,3 +136,11 @@ table tr:first-child td {
 /* .carousel-text > * {
   transform: skew(20deg);
 } */
+
+.text-shadow {
+  text-shadow: 3px 3px #8a6f9c;
+}
+.item-carousel.react-multi-carousel-list {
+  display: flex;
+  justify-content: space-evenly;
+}

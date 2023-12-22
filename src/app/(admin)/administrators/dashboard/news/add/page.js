@@ -1,17 +1,37 @@
 "use client"
 import 'react-toastify/dist/ReactToastify.css';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Puff } from 'react-loader-spinner';
+import Creatable from 'react-select/creatable';
 
 export default () => {
     const editorRef = useRef(null);
     const input = useRef(null);
     const avatar = useRef(null);
+    const tagsInput = useRef(null);
+    const relatedID = useRef(null);
     const [file, setFile] = useState()
     const [loading, setLoading] = useState(false)
+    const [relatedLoading, setrelatedLoading] = useState(false)
+    const [tags, setTags] = useState();
+    const [related, setRelated] = useState([])
+    const [relError, setRelError] = useState(false)
+    useEffect(() => {
+        axios.get("/tags").then(result => {
+            let res = [];
+            result.data.forEach(tag => {
+                const newTag = {
+                    value: tag.tag,
+                    label: tag.tag
+                }
+                res.push(newTag)
+            });
+            setTags(res)
+        })
+    }, [])
     const createElementFromHTML = (htmlString) => {
         const div = document.createElement('div');
         div.innerHTML = htmlString.trim();
@@ -34,7 +54,20 @@ export default () => {
             const subTitle = e.target.subTitle.value;
             const hero = image.data.secure_url;
             const description = content;
-            axios.post("/news/create", { title, subTitle, hero, description }, { headers: { admin: localStorage.getItem("token") ? localStorage.getItem("token") : sessionStorage.getItem("token") } }).then(res => {
+            let rel = [];
+            related.forEach(r => rel.push(r._id))
+            const tagList = tagsInput.current.getValue();
+            let newTags = [];
+            let tags = []
+            tagList.forEach(tag => {
+                const newTag = {
+                    tag: tag.value
+                }
+                tags.push(newTag)
+                if (tag.__isNew__) newTags.push(newTag)
+            })
+            newTags.length && axios.post("/tags", newTags);
+            axios.post("/news/create", { title, subTitle, hero, description, tags, related: rel }, { headers: { admin: localStorage.getItem("token") ? localStorage.getItem("token") : sessionStorage.getItem("token") } }).then(res => {
                 setLoading(false)
                 toast.success('تمت إضافة الخبر بنجاح !', {
                     position: "bottom-left",
@@ -73,6 +106,24 @@ export default () => {
                 uploadRest(content, e)
             }
         }
+    }
+    const addRelated = () => {
+        setRelError(false)
+        const id = relatedID.current.value;
+        if (!related.filter(r => r._id == id).length) {
+            setrelatedLoading(true)
+            axios.get(`/news/${id}`).then(result => {
+                setRelated(current => [...current, result.data])
+                setrelatedLoading(false)
+            }).catch(e => {
+                console.log(e);
+                setrelatedLoading(false)
+                setRelError(true)
+            })
+        }
+    }
+    const removeRelated = id => {
+        setRelated(related => related.filter(r => r._id !== id))
     }
     return (
         <>
@@ -120,6 +171,23 @@ export default () => {
                         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
                     }}
                 />
+                <p className='text-xl text-[#511752] font-bold'>العلامات "اختياري"</p>
+                <Creatable placeholder="العلامات..." ref={tagsInput} options={tags} isMulti closeMenuOnSelect={false} className='md:w-[50%]' />
+                <p className='text-xl text-[#511752] font-bold'>الأخبار المرتبطة "اختياري"</p>
+                <div className="flex gap-10">
+                    <input ref={relatedID} type="text" className='px-4 py-2 w-[300px] rounded-full bg-[#E8E6FF]' name='id' />
+                    <button onClick={() => addRelated()} disabled={relatedLoading} className='flex justify-center py-2 text-[#511752] font-bold rounded-full w-[100px] bg-[#E8E6FF]'>إضافة</button>
+                </div>
+                <p className={`text-red-600 font-bold ${!relError && "hidden"}`}>لا يوجد خبر بهذا الID</p>
+                {
+                    related?.map((rel, index) => (
+                        <div key={index} className='flex items-center gap-5'>
+                            <img src={rel.hero} alt={rel.title} className='h-[50px] w-[50px] object-cover' />
+                            <p className='text-imgn-purple font-bold'>{rel.title}</p>
+                            <button onClick={() => removeRelated(rel._id)} className='flex justify-center py-2 text-[#511752] font-bold rounded-full w-[100px] bg-[#E8E6FF]'>حذف</button>
+                        </div>
+                    ))
+                }
                 <button type='submit' disabled={loading} className='flex justify-center py-2 text-[#511752] font-bold rounded-full w-[300px] bg-[#E8E6FF]'>
                     {loading ? (
                         <Puff

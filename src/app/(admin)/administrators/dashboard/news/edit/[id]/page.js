@@ -6,25 +6,65 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Puff } from 'react-loader-spinner';
 import { useParams, useRouter } from 'next/navigation';
+import Creatable from 'react-select/creatable';
 
 export default () => {
     const { id } = useParams();
     const [news, setNews] = useState();
     const router = useRouter();
+    const [related, setRelated] = useState([])
     useEffect(() => {
         axios.get(`/news/${id}`).then(res => {
             setNews(res.data)
+            let tagList = [];
+            res.data.tags.forEach(tag => {
+                const newTag = {
+                    value: tag.tag,
+                    label: tag.tag
+                }
+                tagList.push(newTag)
+            });
+            setdefaultTags(tagList)
+            let relatedArr = [];
+            for (let i = 0; i < res.data.related.length; i++) {
+                relatedArr.push(axios.get(`/news/${res.data.related[i]}`))
+            }
+            relatedArr.length && axios.all(relatedArr).then(axios.spread((...res) => {
+                res.forEach(r => {
+                    setRelated(related => [...related, r.data].filter((value, index, self) =>
+                        index === self.findIndex((t) => (
+                            t._id === value._id
+                        ))
+                    ))
+                })
+            }))
         }).catch(err => {
             if (err.response.status) {
                 router.push("/404")
             }
         })
+        axios.get("/tags").then(result => {
+            let res = [];
+            result.data.forEach(tag => {
+                const newTag = {
+                    value: tag.tag,
+                    label: tag.tag
+                }
+                res.push(newTag)
+            });
+            setTags(res)
+        })
     }, [])
     const editorRef = useRef(null);
     const input = useRef(null);
     const avatar = useRef(null);
+    const tagsInput = useRef(null);
+    const relatedID = useRef(null);
     const [file, setFile] = useState()
     const [loading, setLoading] = useState(false)
+    const [relatedLoading, setrelatedLoading] = useState(false)
+    const [tags, setTags] = useState();
+    const [defaultTags, setdefaultTags] = useState();
     const createElementFromHTML = (htmlString) => {
         const div = document.createElement('div');
         div.innerHTML = htmlString.trim();
@@ -66,7 +106,20 @@ export default () => {
             const title = e.target.title.value;
             const subTitle = e.target.subTitle.value;
             const description = content;
-            axios.put(`/news/${news._id}`, { title, subTitle, description }, { headers: { admin: localStorage.getItem("token") ? localStorage.getItem("token") : sessionStorage.getItem("token") } }).then(res => {
+            let rel = [];
+            related.forEach(r => rel.push(r._id))
+            const tagList = tagsInput.current.getValue();
+            let newTags = [];
+            let tags = []
+            tagList.forEach(tag => {
+                const newTag = {
+                    tag: tag.value
+                }
+                tags.push(newTag)
+                if (tag.__isNew__) newTags.push(newTag)
+            })
+            newTags.length && axios.post("/tags", newTags);
+            axios.put(`/news/${news._id}`, { title, subTitle, description, tags, related: rel }, { headers: { admin: localStorage.getItem("token") ? localStorage.getItem("token") : sessionStorage.getItem("token") } }).then(res => {
                 setLoading(false)
                 toast.success('تمت تعديل الخبر بنجاح !', {
                     position: "bottom-left",
@@ -112,6 +165,19 @@ export default () => {
                 uploadRest(content, e)
             }
         }
+    }
+    const addRelated = () => {
+        const id = relatedID.current.value;
+        if (!related.filter(r => r._id == id).length) {
+            setrelatedLoading(true)
+            axios.get(`/news/${id}`).then(result => {
+                setRelated(current => [...current, result.data])
+                setrelatedLoading(false)
+            }).catch(e => console.log(e))
+        }
+    }
+    const removeRelated = id => {
+        setRelated(related => related.filter(r => r._id !== id))
     }
     return (
         <>
@@ -160,6 +226,22 @@ export default () => {
                         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
                     }}
                 />
+                <p className='text-xl text-[#511752] font-bold'>العلامات "اختياري"</p>
+                {defaultTags && <Creatable ref={tagsInput} defaultValue={defaultTags} options={tags} placeholder="العلامات..." isMulti closeMenuOnSelect={false} className='md:w-[50%]' />}
+                <p className='text-xl text-[#511752] font-bold'>الأخبار المرتبطة "اختياري"</p>
+                <div className="flex gap-10">
+                    <input ref={relatedID} type="text" className='px-4 py-2 w-[300px] rounded-full bg-[#E8E6FF]' name='id' />
+                    <button onClick={() => addRelated()} disabled={relatedLoading} className='flex justify-center py-2 text-[#511752] font-bold rounded-full w-[100px] bg-[#E8E6FF]'>إضافة</button>
+                </div>
+                {
+                    related?.map((rel, index) => (
+                        <div key={index} className='flex items-center gap-5'>
+                            <img src={rel.hero} alt={rel.title} className='h-[50px] w-[50px] object-cover' />
+                            <p className='text-imgn-purple font-bold'>{rel.title}</p>
+                            <button onClick={() => removeRelated(rel._id)} className='flex justify-center py-2 text-[#511752] font-bold rounded-full w-[100px] bg-[#E8E6FF]'>حذف</button>
+                        </div>
+                    ))
+                }
                 <button type='submit' disabled={loading} className='flex justify-center py-2 text-[#511752] font-bold rounded-full w-[300px] bg-[#E8E6FF]'>
                     {loading ? (
                         <Puff
