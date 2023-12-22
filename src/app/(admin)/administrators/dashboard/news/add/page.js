@@ -79,7 +79,7 @@ export default () => {
                     progress: undefined,
                     theme: "light",
                 });
-            }).catch(err => console.log(err))
+            }).catch(err => console.log("from create", err))
         })
     }
     const uploadImages = e => {
@@ -100,7 +100,7 @@ export default () => {
                         if (index == imgs.length - 1) {
                             uploadRest(content, e)
                         }
-                    }).catch(err => console.log(err))
+                    }).catch(err => console.log("from image", err))
                 })
             } else {
                 uploadRest(content, e)
