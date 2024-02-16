@@ -1,30 +1,31 @@
 "use client";
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 export default () => {
+    const [members, setMembers] = useState([]);
+    const [about, setAbout] = useState("");
+    useEffect(() => {
+        const endpoints = ["/BOD", "/about"];
+        axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then(
+            (data) => {
+                setMembers(data[0].data);
+                setAbout(data[1].data);
+            },
+        );
+    }, [])
     return (
         <>
             <main>
                 <div className="container mx-auto">
                     <div
-                        className="skew-x-n20 flex h-[20vh] md:h-[50vh] mx-10 my-16 md:mx-30 md:my-30 gap-8 bg-white text-black"
+                        className="skew-x-n20 flex min-h-[20vh] md:min-h-[20vh] mx-10 my-16 md:mx-30 md:my-30 gap-8 bg-white text-black"
                     >
-                        <div>
-                            <h1
-                                className="skew-x-20 m-4 md:m-8 text-3xl md:text-4xl font-bold text-center"
-                            >
-                                تست
+                        <div className='w-full'>
+                            <h1 className="text-imgn-purple skew-x-20 m-4 md:m-8 text-3xl md:text-4xl font-bold text-center">
+                                تخيل | IMGN
                             </h1>
-
-                            <p
-                                id="news-text"
-                                className="spanize-and-deskew | text-[0.7rem] m-4 md:text-base text-right"
-                            >
-                                كلام كتير مش مهم بس علشان تشوف شكل الحاجه كلام كتير مش مهم بس
-                                علشان تشوف شكل الحاجه كلام كتير مش مهم بس علشان تشوف شكل الحاجه
-                                كلام كتير مش مهم بس علشان تشوف شكل الحاجه كلام كتير مش مهم بس
-                                علشان تشوف شكل الحاجه كلام كتير مش مهم بس علشان تشوف شكل الحاجه
-                            </p>
+                            <div className='p-5' dangerouslySetInnerHTML={{ __html: about?.about }} />
                         </div>
                     </div>
                 </div>

@@ -4,8 +4,12 @@ import React from 'react'
 export default ({ children }) => {
     const links = [
         {
-            name: "روابط المنصات",
-            href: "home/links"
+            name: "المتخليون",
+            href: "who/BOD"
+        },
+        {
+            name: "عن المنصة",
+            href: "who/about"
         }
     ]
     return (
