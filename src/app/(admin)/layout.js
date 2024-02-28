@@ -35,7 +35,7 @@ export default ({ children }) => {
             <head>
                 <title>IMGN</title>
                 <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
-                <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+                <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
             </head>
             <body>
                 <div className={poppins.className}>
